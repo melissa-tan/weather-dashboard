@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    border: none;
+}
+
+:root{
+    --primary-color: #1F2839;
+    --secondary-color: #B69F74;
+    --tertiary-color: #F5F5EF;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: var(--tertiary-color);
+    padding: 10px;
+}
+
+.content{
+    display: flex;
+}
+.title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.left-side{
+    background-color: rgb(230, 230, 230);
+    display: flex;
+    padding: 20px;
+}
+
+.search-box{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.city-search{
+    height: 30px;
+}
+.search-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #2196F3;
+    color: white;
+    height: 30px;
+    width: 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 4px;
+}
+.right-side{
+    display: flex;
+}
