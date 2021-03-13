@@ -25,7 +25,7 @@ header {
     display: flex;
 }
 .title{
-    font-size: 20px;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
@@ -58,5 +58,40 @@ header {
     margin-left: 4px;
 }
 .right-side{
+    display: block;
+    padding: 20px;
+    width: 100%;
+}
+
+section{
+    display: block;
+}
+.main-display{
+    border: lightslategray solid 1px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.main-info{
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+.sub-display{
+    margin-top: 20px;
+}
+
+.weather-card{
     display: flex;
+}
+.card{
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    column-gap: 5px;
+    margin: 5px;
+    padding: 20px;
+    line-height: 2rem;
+}
+.card-title{
+    font-weight: bold;
+    font-size: 1.25rem;
 }
