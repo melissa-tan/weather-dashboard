@@ -1,15 +1,20 @@
 const apikey = "68b83ae1e2bfeb301dd9fe8141c38278";
+const clearHistoryBtnEl = document.querySelector(".clear-history");
+const getHistory = document.querySelector("#get-history");
 let today = new Date();
+let futureWeatherEl = "";
 
 
 const searchBtnEl = document.querySelector(".search-icon");
 searchBtnEl.addEventListener("click", userInput);
+clearHistoryBtnEl.addEventListener("click", clearHistory)
 
 function userInput(){
+
     let userCity = document.querySelector("#search-text").value.toLowerCase();
     let cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&appid=" + apikey;
-    console.log(cityURL)
     locationFinder(cityURL);
+    updateHistory(userCity);
 }
 
 function locationFinder(cityURL){
@@ -27,7 +32,6 @@ function weatherInfo (data){
     let lat = data.coord.lat
     let apiCity = data.name;
     let weatherInfoURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" +lat+"&lon="+lon+"&units=imperial&exclude=minutely,hourly,alerts&appid="+ apikey;
-    console.log(weatherInfoURL);
 
     fetch(weatherInfoURL)
     .then(function(response2){
@@ -46,12 +50,9 @@ function getCurrentWeather(data2, apiCity){
     let icon = data2.current.weather[0].icon;
     let iconText = data2.current.weather[0].main;
 
-    console.log(temp, humid, windSpeed, uvIndex)
     let currentDisplay = document.querySelector(".main-display");
     
-    let mainContentEl = document.createElement("div");
-    /* mainContentEl.classlist.add("main-display"); */
-    
+    let mainContentEl = document.createElement("div");    
     let mainContent = 
         `<div class="title"> ${apiCity}</div>
         <img src= "http://openweathermap.org/img/wn/${icon}@2x.png" alt="${iconText}">
@@ -64,7 +65,8 @@ function getCurrentWeather(data2, apiCity){
     mainContentEl.classList.add("main-display");
 
     currentDisplay.parentNode.replaceChild(mainContentEl,currentDisplay);
-    for(let i = 1; i < 6; i++){
+    document.querySelector(".weather-card").textContent = "";
+    for(let i = 1; i <=5 ; i++){
         let futureDate = new Date(today);
         let dateFormat = {year: "numeric", month: "numeric", day: "numeric"};
         futureDate.setDate(today.getDate() + i);
@@ -91,7 +93,34 @@ function getCurrentWeather(data2, apiCity){
     }
 }
 
+function updateHistory(userCity){
+    document.querySelector("#get-history").textContent = "";
+    let storage = JSON.parse(localStorage.getItem("userInput"));
+    let object;
+    if(storage != null){
+        storage.push(userCity);
+        object = storage
+      } else {
+        object = [userCity];
+      }
+      var jsonObject = JSON.stringify(object);
+      localStorage.setItem("userInput", jsonObject);
+      console.log(storage.length);
 
+    for(i=1 ; i<storage.length ; i++){
+        let storage = JSON.parse(localStorage.getItem("userInput"));
+        let displayHistory = document.createElement("div");
+        let updateItem =
+        `<button class="history-item">${storage[i]}</button>`;
 
+        displayHistory.innerHTML = updateItem;
+        getHistory.appendChild(displayHistory);
+    }
 
+    }
 
+    function clearHistory(){
+        localStorage.clear("userCity");
+        localStorage.removeItem("userCity");
+        updateHistory();
+    }
