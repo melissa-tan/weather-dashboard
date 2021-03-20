@@ -3,27 +3,54 @@ const clearHistoryBtnEl = document.querySelector(".clear-history");
 const getHistory = document.querySelector("#get-history");
 let today = new Date();
 let futureWeatherEl = "";
-
-
 const searchBtnEl = document.querySelector(".search-icon");
-searchBtnEl.addEventListener("click", userInput);
-clearHistoryBtnEl.addEventListener("click", clearHistory)
+searchBtnEl.addEventListener("click", getCity);
+clearHistoryBtnEl.addEventListener("click", clearHistory);
+const reloadHistoryEl = document.querySelector(".history-item");
 
-function userInput(){
 
-    let userCity = document.querySelector("#search-text").value.toLowerCase();
-    let cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&appid=" + apikey;
-    locationFinder(cityURL);
-    updateHistory(userCity);
+function getCity(event){
+    console.log(event.target.getAttribute("data-id"));
+    if(event.target.getAttribute("data-id")){
+        userCity=event.target.getAttribute("data-id");
+    }else{
+        userCity = document.querySelector("#search-text").value.toLowerCase();
+    }
+    console.log(userCity)
+    userInput(userCity);
+
+    // if (document.querySelector("#search-text").value != ""){
+    //     let userCity = document.querySelector("#search-text").value.toLowerCase();
+    //     userInput(userCity);
+    // }else{
+    //     let userCity = reloadHistoryEl.value;
+    //     console.log(userCity);
+    //     userInput(userCity);
+    // }
+    
 }
 
-function locationFinder(cityURL){
+
+function userInput(userCity){
+    let cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + userCity + "&appid=" + apikey;
+    locationFinder(cityURL,userCity); 
+}
+
+function locationFinder(cityURL,userCity){
     fetch(cityURL)
     .then(response => {
-        return response.json();
+        if(response.ok){
+            return response.json();
+        }else{
+            throw new Error("Please input valid city");
+        }
     })
     .then(data => {
         weatherInfo(data);
+        updateHistory(userCity);
+    })
+    .catch(error=>{
+        alert(error);
     });
 }
 
@@ -35,6 +62,7 @@ function weatherInfo (data){
 
     fetch(weatherInfoURL)
     .then(function(response2){
+        console.log(response2)
         return response2.json();
     })
     .then(function (data2){
@@ -96,31 +124,33 @@ function getCurrentWeather(data2, apiCity){
 function updateHistory(userCity){
     document.querySelector("#get-history").textContent = "";
     let storage = JSON.parse(localStorage.getItem("userInput"));
-    let object;
+    let cityHistory=[userCity];
     if(storage != null){
-        storage.push(userCity);
-        object = storage
-      } else {
-        object = [userCity];
-      }
-      var jsonObject = JSON.stringify(object);
+        storage.forEach(city=>{
+            if (city !== userCity){
+                cityHistory.push(city);
+            }
+        })
+    }
+      var jsonObject = JSON.stringify(cityHistory);
       localStorage.setItem("userInput", jsonObject);
-      console.log(storage.length);
+    getHistory.innerHTML="";
+    cityHistory.forEach(city=>{
 
-    for(i=1 ; i<storage.length ; i++){
-        let storage = JSON.parse(localStorage.getItem("userInput"));
         let displayHistory = document.createElement("div");
         let updateItem =
-        `<button class="history-item">${storage[i]}</button>`;
-
+        `<button class="history-item btn" data-id="${city}"onclick="getCity(event)">${city}</button>`;
         displayHistory.innerHTML = updateItem;
         getHistory.appendChild(displayHistory);
-    }
+    })
+    
+   /*  const reloadHistoryEl = document.querySelector(".history-item");
+    console.log(reloadHistoryEl)
+    reloadHistoryEl.addEventListener("click", getCity, false); */
+}
 
-    }
-
-    function clearHistory(){
-        localStorage.clear("userCity");
-        localStorage.removeItem("userCity");
-        updateHistory();
-    }
+function clearHistory(){
+    localStorage.clear("userCity");
+    localStorage.removeItem("userCity");
+    getHistory.innerHTML="";
+}

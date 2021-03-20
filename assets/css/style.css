@@ -101,3 +101,21 @@ section{
     font-weight: bold;
     font-size: 1.25rem;
 }
+
+.btn{
+    border: black 1px solid;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    text-align: left;
+    font-size: 1.1rem;
+    margin-top: 1px;
+}
+
+.btn:hover{
+    background: #2196F3;
+}
+
+
+
