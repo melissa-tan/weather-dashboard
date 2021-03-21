@@ -74,7 +74,7 @@ function getCurrentWeather(data2, apiCity){
     let temp = data2.current.temp;
     let humid = data2.current.humidity;
     let windSpeed = data2.current.wind_speed;
-    let uvIndex = data2.current.uvi;
+    let uvIndex = uvColor(data2.current.uvi);
     let icon = data2.current.weather[0].icon;
     let iconText = data2.current.weather[0].main;
 
@@ -153,4 +153,20 @@ function clearHistory(){
     localStorage.clear("userCity");
     localStorage.removeItem("userCity");
     getHistory.innerHTML="";
+}
+
+function uvColor(uvi){
+    let uv;
+    if(uvi < 3){
+        uv = `<span class="low"> ${uvi} </span>`
+    } else if (uvi < 6){
+        uv = `<span class="moderate"> ${uvi} </span>`
+    } else if (uvi<8){
+        uv = `<span class="high"> ${uvi} </span>`
+    } else if (uvi<11){
+        uv = `<span class="very-high"> ${uvi} </span>`
+    } else{
+        uv = `<span class="extreme"> ${uvi} </span>`
+    }
+    return uv;
 }

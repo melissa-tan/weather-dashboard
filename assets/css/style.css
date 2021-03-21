@@ -117,5 +117,32 @@ section{
     background: #2196F3;
 }
 
+.low {
+    background-color: green;
+    color: #FFF;
+    padding: 2px;
+}
+
+.moderate {
+    background-color: yellow;
+    padding: 2px;
+}
+
+.high {
+    background-color: orange;
+    padding: 2px;
+}
+
+.very-high {
+    background-color: red;
+    color: #FFF;
+    padding: 2px;
+}
+
+.extreme {
+    background-color: magenta;
+    padding: 2px;
+}
+
 
 
